@@ -7,12 +7,12 @@ function cleanInput(input: string): string[] {
     .filter((str) => str.length > 0);
 }
 
-function startREPL(state: State) {
+async function startREPL(state: State) {
   const rl = state.readline;
 
   rl.prompt(); // Print the prompt
 
-  rl.on("line", (input) => {
+  rl.on("line", async (input) => {
     const args = cleanInput(input);
 
     if (args.length === 0) {
@@ -33,12 +33,10 @@ function startREPL(state: State) {
     }
 
     try {
-      command.callback(state);
+      await command.callback(state);
     } catch (error) {
       console.error(`Error: ${error}`);
     }
-
-    rl.prompt();
   });
 }
 
